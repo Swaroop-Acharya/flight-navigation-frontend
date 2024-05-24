@@ -11,7 +11,7 @@ function NearbyAirportSearcher({ setNearbyRoute }) { // Accept setNearbyRoute as
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/get-nearest-airport", {
+      const response = await fetch(`${process.env.URL}/api/get-nearest-airport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -24,7 +24,7 @@ function NearbyAirportSearcher({ setNearbyRoute }) { // Accept setNearbyRoute as
         })
       });
       const data = await response.json();
-      await axios.post('http://localhost:5000/api/near', data);
+      await axios.post(`${process.env.URL}/api/near`, data);
       console.log(data)
       
       // Update the nearby route using setNearbyRoute
