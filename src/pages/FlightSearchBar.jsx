@@ -28,7 +28,7 @@ export default function FlightSearchBar() {
   useEffect(() => {
     const fetchAircraftData = async () => {
       try {
-        const response = await axios.get(`${process.env.URL}/api/aircraft`);
+        const response = await axios.get(`https://flight-navigation-backend.onrender.com/api/aircraft`);
         console.log(response.data)
         console.log("Aircraft data fetched:", response.data);
         setAircraftData(response.data);
@@ -101,17 +101,17 @@ export default function FlightSearchBar() {
       const to_city = response.data.data.attributes.to_airport.city;
 
       const getWeatherResponse1 = await axios.post(
-        `${process.env.URL}/api/getlocation`,
+        `https://flight-navigation-backend.onrender.com/api/getlocation`,
         { location: from_city }
       );
       const getWeatherResponse2 = await axios.post(
-        `${process.env.URL}/api/getlocation`,
+        `https://flight-navigation-backend.onrender.com/api/getlocation`,
         { location: to_city }
       );
       const from_weatherData = getWeatherResponse1.data;
       const to_weatherData = getWeatherResponse2.data;
-      await axios.post(`${process.env.URL}/api/insertAirport`, response.data);
-      await axios.post(`${process.env.URL}/api/insertDestinationAirport`, response.data);
+      await axios.post(`https://flight-navigation-backend.onrender.com/api/insertAirport`, response.data);
+      await axios.post(`https://flight-navigation-backend.onrender.com/api/insertDestinationAirport`, response.data);
       console.log(from_weatherData);
       console.log(to_weatherData);
 

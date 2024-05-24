@@ -21,7 +21,7 @@ export default function SearchAltRoute() {
     try {
       // Call the airport-graphs API through the backend server
       const response = await axios.post(
-        `${process.env.URL}/api/airport-graphs`,
+        `https://flight-navigation-backend.onrender.com/api/airport-graphs`,
         {
           sourceIataCode: fromDestination,
           destinationIataCode: toDestination,
@@ -67,7 +67,7 @@ export default function SearchAltRoute() {
       console.log(icao24)
       console.log(distance)
       const altFuelResponse = await axios.get(
-        `${process.env.URL}/api/flight-fuel`,
+        `https://flight-navigation-backend.onrender.com/api/flight-fuel`,
         {
           params: {
             aircraft: icao24,
@@ -78,7 +78,7 @@ export default function SearchAltRoute() {
       );
 
       const { fuel: altFuel, co2: altCo2 } = altFuelResponse.data[0];
-      await axios.post(`${process.env.URL}/api/insertFlightFuel`, altFuelResponse.data[0]);
+      await axios.post(`https://flight-navigation-backend.onrender.com/api/insertFlightFuel`, altFuelResponse.data[0]);
       setAltFuelInfo({ distance, altFuel, altCo2 });
 
     } catch (error) {
