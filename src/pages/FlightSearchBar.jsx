@@ -28,7 +28,7 @@ export default function FlightSearchBar() {
   useEffect(() => {
     const fetchAircraftData = async () => {
       try {
-        const response = await axios.get("https://flight-navigation-backend.onrender.com/api/aircraft");
+        const response = await axios.get("http://localhost:5000/api/aircraft");
         console.log(response.data);
         console.log("Aircraft data fetched:", response.data);
         setAircraftData(response.data);
@@ -157,16 +157,16 @@ export default function FlightSearchBar() {
       const from_city = response.data.data.attributes.from_airport.city;
       const to_city = response.data.data.attributes.to_airport.city;
 
-      const routesData = await axios.get('https://flight-navigation-backend.onrender.com/api/getRoute');
+      const routesData = await axios.get('http://localhost:5000/api/getRoute');
       
      
       const citiesCovered = getCitiesCovered(from_city, to_city, routesData.data);
       const getWeatherResponse1 = await axios.post(
-        "https://flight-navigation-backend.onrender.com/api/getlocation",
+        "http://localhost:5000/api/getlocation",
         { location: from_city }
       );
       const getWeatherResponse2 = await axios.post(
-        "https://flight-navigation-backend.onrender.com/api/getlocation",
+        "http://localhost:5000/api/getlocation",
         { location: to_city }
       );
       const from_weatherData = getWeatherResponse1.data;
@@ -176,11 +176,11 @@ export default function FlightSearchBar() {
       console.log(from_city, to_city, ...citiesCovered);
 
       await axios.post(
-        "https://flight-navigation-backend.onrender.com/api/insertAirport",
+        "http://localhost:5000/api/insertAirport",
         response.data
       );
       await axios.post(
-        "https://flight-navigation-backend.onrender.com/api/insertDestinationAirport",
+        "http://localhost:5000/api/insertDestinationAirport",
         response.data
       );
       console.log(from_weatherData);
@@ -192,15 +192,15 @@ export default function FlightSearchBar() {
       if (flightType === "takeoff") {
         
         const fromFlyStatus = await axios.post(
-          `https://flight-navigation-backend.onrender.com/api/getFlyStatus`,
+          `http://localhost:5000/api/getFlyStatus`,
           [from_city]
         );
         const middleCitiesFlyStatus = await axios.post(
-          `https://flight-navigation-backend.onrender.com/api/getFlyStatus`,
+          `http://localhost:5000/api/getFlyStatus`,
           [to_city, ...citiesCovered]
         );
         const toFlyStatus = await axios.post(
-          `https://flight-navigation-backend.onrender.com/api/getFlyStatus`,
+          `http://localhost:5000/api/getFlyStatus`,
           [to_city]
         );
         
