@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import FlightMap from "./FlightMap"; // Ensure the correct path
 import { Icon } from "leaflet";
+import { toast } from "react-toastify";
 
 export default function SearchAltRoute() {
   const [fromDestination, setFromDestination] = useState("");
@@ -16,6 +17,12 @@ export default function SearchAltRoute() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+     // Validate input fields
+     if (!fromDestination || !toDestination || !icao24) {
+      toast.error("All fields are required");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -80,7 +87,7 @@ export default function SearchAltRoute() {
       const { fuel: altFuel, co2: altCo2 } = altFuelResponse.data[0];
       await axios.post(`https://flight-navigation-backend.onrender.com/api/insertFlightFuel`, altFuelResponse.data[0]);
       setAltFuelInfo({ distance, altFuel, altCo2 });
-
+      toast("Alternative Route Found")
     } catch (error) {
       console.error(error);
     } finally {
