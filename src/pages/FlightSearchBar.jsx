@@ -28,7 +28,7 @@ export default function FlightSearchBar() {
   useEffect(() => {
     const fetchAircraftData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/aircraft");
+        const response = await axios.get("https://flight-navigation-backend.onrender.com/api/aircraft");
         console.log(response.data);
         console.log("Aircraft data fetched:", response.data);
         setAircraftData(response.data);
@@ -41,89 +41,102 @@ export default function FlightSearchBar() {
   }, []);
 
 
-  function checkWeatherConditions(weatherData, location) {
-    const minVisibilityKm = 5; // Minimum visibility in kilometers
-    const maxWindSpeedKph = 40; // Maximum wind speed in kilometers per hour
-    const maxCloudCover = 80; // Maximum cloud cover in percentage
-    const minTemperatureC = -40; // Minimum temperature in Celsius
-    const maxTemperatureC = 49; // Maximum temperature in Celsius
-    const minPressureMb = 950; // Minimum pressure in millibars
-    const maxHumidity = 95; // Maximum humidity in percentage
-    const maxUVIndex = 5; // Maximum UV index
+  // function checkWeatherConditions(weatherData, location) {
+  //   const minVisibilityKm = 5; // Minimum visibility in kilometers
+  //   const maxWindSpeedKph = 40; // Maximum wind speed in kilometers per hour
+  //   const maxCloudCover = 80; // Maximum cloud cover in percentage
+  //   const minTemperatureC = -40; // Minimum temperature in Celsius
+  //   const maxTemperatureC = 49; // Maximum temperature in Celsius
+  //   const minPressureMb = 950; // Minimum pressure in millibars
+  //   const maxHumidity = 95; // Maximum humidity in percentage
+  //   const maxUVIndex = 5; // Maximum UV index
   
-    if (!weatherData) {
-      toast.error(
-        "Cannot fetch weather data for " +
-          location +
-          ". Flight status is unknown."
-      );
-      return false;
-    }
+  //   if (!weatherData) {
+  //     toast.error(
+  //       "Cannot fetch weather data for " +
+  //         location +
+  //         ". Flight status is unknown."
+  //     );
+  //     return false;
+  //   }
   
-    let conditionMet = true;
+  //   let conditionMet = true;
   
   
     
-    // Check visibility
-    if (factors.visibility.km < minVisibilityKm) {
-      toast.error(
-        "Cannot fly because visibility at " + location + " is too low. Flight will be delayed."
-      );
-      conditionMet = false;
+  //   // Check visibility
+  //   if (factors.visibility.km < minVisibilityKm) {
+  //     toast.error(
+  //       "Cannot fly because visibility at " + location + " is too low. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   // Check wind speed
+  //   if (factors.wind.speed > maxWindSpeedKph) {
+  //     toast.error(
+  //       "Cannot fly because wind speed at " + location + " is too high. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   // Check cloud cover
+  //   if (factors.cloudCover > maxCloudCover) {
+  //     toast.error(
+  //       "Cannot fly because cloud cover at " + location + " is too high. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   // Check temperature
+  //   if (factors.temperature.celsius < minTemperatureC || factors.temperature.celsius > maxTemperatureC) {
+  //     toast.error(
+  //       "Cannot fly because temperature at " + location + " is out of the safe range. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   // Check pressure
+  //   if (factors.pressure.mb < minPressureMb) {
+  //     toast.error(
+  //       "Cannot fly because pressure at " + location + " is too low. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   // Check humidity
+  //   if (factors.humidity > maxHumidity) {
+  //     toast.error(
+  //       "Cannot fly because humidity at " + location + " is too high. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   // Check UV index
+  //   if (factors.uvIndex > maxUVIndex) {
+  //     toast.error(
+  //       "Cannot fly because UV index at " + location + " is too high. Flight will be delayed."
+  //     );
+  //     conditionMet = false;
+  //   }
+  
+  //   return conditionMet;
+  // }
+  
+  const checkWeatherConditions = (weatherData) => {
+    const minVisibility = 1.0; // Minimum visibility in kilometers
+    const maxWindSpeed = 20.0; // Maximum wind speed in kilometers per hour
+  
+    // Check if visibility and wind speed are within acceptable ranges
+    if (
+      weatherData.visibility.km >= minVisibility &&
+      weatherData.wind.speed <= maxWindSpeed
+    ) {
+      return true; // Weather conditions are suitable
     }
+    return false; // Weather conditions are not suitable
+  };
   
-    // Check wind speed
-    if (factors.wind.speed > maxWindSpeedKph) {
-      toast.error(
-        "Cannot fly because wind speed at " + location + " is too high. Flight will be delayed."
-      );
-      conditionMet = false;
-    }
-  
-    // Check cloud cover
-    if (factors.cloudCover > maxCloudCover) {
-      toast.error(
-        "Cannot fly because cloud cover at " + location + " is too high. Flight will be delayed."
-      );
-      conditionMet = false;
-    }
-  
-    // Check temperature
-    if (factors.temperature.celsius < minTemperatureC || factors.temperature.celsius > maxTemperatureC) {
-      toast.error(
-        "Cannot fly because temperature at " + location + " is out of the safe range. Flight will be delayed."
-      );
-      conditionMet = false;
-    }
-  
-    // Check pressure
-    if (factors.pressure.mb < minPressureMb) {
-      toast.error(
-        "Cannot fly because pressure at " + location + " is too low. Flight will be delayed."
-      );
-      conditionMet = false;
-    }
-  
-    // Check humidity
-    if (factors.humidity > maxHumidity) {
-      toast.error(
-        "Cannot fly because humidity at " + location + " is too high. Flight will be delayed."
-      );
-      conditionMet = false;
-    }
-  
-    // Check UV index
-    if (factors.uvIndex > maxUVIndex) {
-      toast.error(
-        "Cannot fly because UV index at " + location + " is too high. Flight will be delayed."
-      );
-      conditionMet = false;
-    }
-  
-    return conditionMet;
-  }
-  
- 
   function getCitiesCovered(origin, destination,routes) {
 
     console.log(routes)
@@ -157,16 +170,16 @@ export default function FlightSearchBar() {
       const from_city = response.data.data.attributes.from_airport.city;
       const to_city = response.data.data.attributes.to_airport.city;
 
-      const routesData = await axios.get('http://localhost:5000/api/getRoute');
+      const routesData = await axios.get('https://flight-navigation-backend.onrender.com/api/getRoute');
       
      
       const citiesCovered = getCitiesCovered(from_city, to_city, routesData.data);
       const getWeatherResponse1 = await axios.post(
-        "http://localhost:5000/api/getlocation",
+        "https://flight-navigation-backend.onrender.com/api/getlocation",
         { location: from_city }
       );
       const getWeatherResponse2 = await axios.post(
-        "http://localhost:5000/api/getlocation",
+        "https://flight-navigation-backend.onrender.com/api/getlocation",
         { location: to_city }
       );
       const from_weatherData = getWeatherResponse1.data;
@@ -176,11 +189,11 @@ export default function FlightSearchBar() {
       console.log(from_city, to_city, ...citiesCovered);
 
       await axios.post(
-        "http://localhost:5000/api/insertAirport",
+        "https://flight-navigation-backend.onrender.com/api/insertAirport",
         response.data
       );
       await axios.post(
-        "http://localhost:5000/api/insertDestinationAirport",
+        "https://flight-navigation-backend.onrender.com/api/insertDestinationAirport",
         response.data
       );
       console.log(from_weatherData);
@@ -192,15 +205,15 @@ export default function FlightSearchBar() {
       if (flightType === "takeoff") {
         
         const fromFlyStatus = await axios.post(
-          `http://localhost:5000/api/getFlyStatus`,
+          `https://flight-navigation-backend.onrender.com/api/getFlyStatus`,
           [from_city]
         );
         const middleCitiesFlyStatus = await axios.post(
-          `http://localhost:5000/api/getFlyStatus`,
+          `https://flight-navigation-backend.onrender.com/api/getFlyStatus`,
           [to_city, ...citiesCovered]
         );
         const toFlyStatus = await axios.post(
-          `http://localhost:5000/api/getFlyStatus`,
+          `https://flight-navigation-backend.onrender.com/api/getFlyStatus`,
           [to_city]
         );
         
