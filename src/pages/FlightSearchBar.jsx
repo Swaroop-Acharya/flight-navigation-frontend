@@ -40,6 +40,23 @@ export default function FlightSearchBar() {
     fetchAircraftData();
   }, []);
 
+  // Scroll to form on mount if navigating from nav
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const element = document.getElementById('route-status-form');
+      if (element && window.location.hash === '#route-status-form') {
+        const navbarHeight = 80;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navbarHeight;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
 
   // function checkWeatherConditions(weatherData, location) {
   //   const minVisibilityKm = 5; // Minimum visibility in kilometers
@@ -271,10 +288,10 @@ export default function FlightSearchBar() {
   );
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex">
-        <div className="w-full block ">
-        <h1 className="text-3xl text-white font-bold mb-4">Check status of current route</h1>
+    <div className="container mx-auto p-2 sm:p-4 w-full max-w-full">
+      <div className="flex flex-col w-full">
+        <div className="w-full" id="route-status-form">
+        <h1 className="text-xl sm:text-2xl md:text-3xl text-white font-bold mb-4 px-2 sm:px-0 text-center">Check status of current route</h1>
           <FlightForm
             fromAirport={fromAirport}
             setFromAirport={setFromAirport}
@@ -290,7 +307,7 @@ export default function FlightSearchBar() {
         </div>
         <div>
           {flightType === "landing" && weatherData && (
-            <div className="w-full block">
+            <div className="w-full block mt-4">
               <WeatherCard
                 weatherData={weatherData}
                 setNearbyRoute={setNearbyRoute}
@@ -301,19 +318,19 @@ export default function FlightSearchBar() {
       </div>
 
       {showFlightDetails && (
-        <div>
-          <div className="flex space-x-4">
-            <div className="w-1/3 bg-gray-100 block p-4 rounded shadow-md">
+        <div className="mt-4">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="w-full lg:w-1/4 bg-gray-100 block p-4 rounded shadow-md">
               <FlightInfo
                 AirportInfo={fromAirportInfo}
                 kilometers={kilometers}
                 path="Source"
               />
             </div>
-            <div className="w-full">
+            <div className="w-full lg:w-1/2">
               <FlightMap route={nearbyRoute || route} />
             </div>
-            <div className="w-1/3 bg-gray-100 block p-4 rounded shadow-md">
+            <div className="w-full lg:w-1/4 bg-gray-100 block p-4 rounded shadow-md">
               <FlightInfo
                 AirportInfo={toAirportInfo}
                 kilometers={kilometers}
@@ -321,12 +338,16 @@ export default function FlightSearchBar() {
               />
             </div>
           </div>
-          <div className=" flex gap-3  w-2/4 h-2/4">
-            <WeatherDetails weatherData={fromWeatherData} path="Source" />
-            <WeatherDetails weatherData={toWeatherData} path="Destination" />
+          <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full">
+            <div className="w-full sm:w-1/2">
+              <WeatherDetails weatherData={fromWeatherData} path="Source" />
+            </div>
+            <div className="w-full sm:w-1/2">
+              <WeatherDetails weatherData={toWeatherData} path="Destination" />
+            </div>
           </div>
-          <div className="mt-3 gap-3 justify-center rounded  flex">
-            <div className="w-2/3 h-2/4">
+          <div className="mt-3 gap-3 justify-center rounded flex">
+            <div className="w-full sm:w-2/3">
               <FlightDetailsCard aircraft={selectedAircraft} />
             </div>
           </div>

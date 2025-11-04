@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FlightMap from "./FlightMap"; // Ensure the correct path
 import { Icon } from "leaflet";
@@ -13,6 +13,23 @@ export default function SearchAltRoute() {
   const [airportDetails, setAirportDetails] = useState([]);
   const [distance, setDistance] = useState(null);
   const [altFuelInfo, setAltFuelInfo] = useState(null);
+
+  // Scroll to form on mount if navigating from nav
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const element = document.getElementById('alt-route-form');
+      if (element && window.location.hash === '#alt-route-form') {
+        const navbarHeight = 80;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navbarHeight;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,11 +107,12 @@ export default function SearchAltRoute() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl text-white font-bold mb-4">Search Alternative Route</h1>
+    <div className="container mx-auto p-2 sm:p-4">
+      <h1 className="text-xl sm:text-2xl md:text-3xl text-white font-bold mb-4 px-2 sm:px-0 text-center">Search Alternative Route</h1>
       <form
+        id="alt-route-form"
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded px-4 sm:px-8 pt-6 pb-8 mb-4 max-w-2xl mx-auto"
       >
         <div className="mb-4">
           <label

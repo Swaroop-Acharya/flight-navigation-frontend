@@ -3,10 +3,10 @@ import React from "react";
 function FlightInfo({ AirportInfo, kilometers,path }) {
   console.log(AirportInfo)
   return (
-    <div className=" mb-4">
-      <h2 className="text-xl font-bold mb-4">{path} Information</h2>
+    <div className="mb-4">
+      <h2 className="text-lg sm:text-xl font-bold mb-4">{path} Information</h2>
       {AirportInfo && (
-        <div className="bg-white p-3 rounded">
+        <div className="bg-white p-3 rounded text-sm sm:text-base">
 
           <p className="font-semibold"> {AirportInfo.name}</p>
           <p>City: {AirportInfo.city}</p>

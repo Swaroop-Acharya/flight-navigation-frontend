@@ -87,9 +87,9 @@ const FlightDetailsCard = ({ aircraft }) => {
 
   return (
     <div className="bg-white rounded shadow-md p-4">
-      <h2 className="text-lg font-bold mb-2">{aircraft?.model} Engine Health Comparison</h2>
-      <div className="mb-2">
-        <canvas ref={chartRef} width={200} height={100}></canvas>
+      <h2 className="text-base sm:text-lg font-bold mb-2">{aircraft?.model} Engine Health Comparison</h2>
+      <div className="mb-2 overflow-x-auto">
+        <canvas ref={chartRef} width={200} height={100} className="max-w-full"></canvas>
       </div>
       <div className="bg-gray-100 p-2 rounded">
         <p className="text-xs">Engine 1 Oil Pressure: {aircraft?.engineHealth?.engine1?.oilPressure || "Unknown"}</p>

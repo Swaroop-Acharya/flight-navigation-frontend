@@ -18,14 +18,14 @@ const Speedometer = ({ value }) => {
   const rotation = `rotate(${degrees}deg)`;
 
   return (
-    <div className="relative w-32 h-32">
+    <div className="relative w-24 h-24 sm:w-32 sm:h-32">
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-32 h-32 rounded-full border-4 border-gray-300"></div>
+        <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-gray-300"></div>
         <div
-          className="absolute w-32 h-32 rounded-full border-4 border-transparent border-t-gray-500 transform"
+          className="absolute w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-transparent border-t-gray-500 transform"
           style={{ transform: rotation }}
         ></div>
-        <div className="absolute flex items-center justify-center w-28 h-28 bg-white rounded-full">
+        <div className="absolute flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 bg-white rounded-full">
           <div className="text-xl font-bold">{value}%</div>
         </div>
       </div>
@@ -149,11 +149,11 @@ const WeatherDetails = ({ weatherData,path }) => {
   } = weatherData;
 
   return (
-    <div className="bg-white p-6 mt-3 rounded-lg shadow-md">
+    <div className="bg-white p-4 sm:p-6 mt-3 rounded-lg shadow-md">
       <div className="flex items-center mb-4">
-        <h2 className="text-xl font-bold">{path} Weather Details</h2>
+        <h2 className="text-lg sm:text-xl font-bold">{path} Weather Details</h2>
       </div>
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
 
       <div>
         <p className="mb-2">
